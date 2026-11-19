@@ -26,7 +26,7 @@ button{font:600 14px system-ui;padding:6px 12px;border:1px solid #1f6b3a;border-
 <script>
 const D=__DATA__,sel=new Set(),L=document.getElementById("list");
 const pc=x=>Math.round(x*100)+"%";
-const top=m=>m.ph>=m.pd&&m.ph>=m.pa?["h",m.ph,m.h+" menang"]:m.pa>=m.pd?["a",m.pa,m.a+" menang"]:["d",m.pd,"Seri"];
+const best=m=>m.ph>=m.pd&&m.ph>=m.pa?["h",m.ph,m.h+" menang"]:m.pa>=m.pd?["a",m.pa,m.a+" menang"]:["d",m.pd,"Seri"];
 function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function draw(){
  L.replaceChildren();
@@ -35,7 +35,7 @@ function draw(){
   t.append(el("span",0,m.lg),el("span",0,new Date(m.t).toLocaleString("id-ID",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",timeZone:"Asia/Jakarta"})+" WIB"));
   const bar=el("div","b");
   [["h",m.ph],["d",m.pd],["a",m.pa]].forEach(([k,p])=>{const s=el("div",k,pc(p));s.style.width=p*100+"%";bar.append(s)});
-  const p=top(m),tg=el("span","tag "+m.label,m.label);
+  const p=best(m),tg=el("span","tag "+m.label,m.label);
   const info=el("div","m",`Skor paling mungkin ${m.sc[0]}-${m.sc[1]} | Over 2.5: ${pc(m.o25)} | Kedua tim cetak gol: ${pc(m.btts)} | Poin 5 laga terakhir: ${m.fh} vs ${m.fa}`);
   const why=el("div","m","Alasan: "+m.why.join(", "));
   const row=el("div","t");const pr=el("span");pr.append("Prediksi: ",el("b",0,p[2]+" ("+pc(p[1])+") "),tg);
@@ -44,7 +44,7 @@ function draw(){
   c.append(t,el("div","v",m.h+" vs "+m.a),bar,info,why,row);L.append(c);
  });
  const tr=document.getElementById("tray");tr.hidden=!sel.size;
- if(sel.size){const pp=[...sel].reduce((s,i)=>s*top(D[i])[1],1);
+ if(sel.size){const pp=[...sel].reduce((s,i)=>s*best(D[i])[1],1);
   tr.textContent=sel.size+" pilihan. Peluang semua benar: "+(pp*100).toFixed(1)+"%"}
 }
 draw();
